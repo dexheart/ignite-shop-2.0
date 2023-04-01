@@ -10,6 +10,8 @@ import Stripe from "stripe";
 import Head from "next/head";
 import { stripe } from "../lib/stripe";
 
+import Bag from '../assets/Bag.png'
+
 interface HomeProps {
   products: {
     id: string;
@@ -43,18 +45,26 @@ export default function Home({ products }: HomeProps) {
         {products.map(product => {
 
           return(
-            <Link key={product.id} href={`/product/${product.id}`} prefetch={ false } >
-              <Product  className='keen-slider__slide'>
+
+            <Product key={product.id}  className='keen-slider__slide'>
                 <Image src={product.imageUrl} width={520} height={380} alt={""} /> 
 
                 <footer>
-                  <strong>{product.name}</strong>
-                  <span>R$ {(product.price / 100).toFixed(2)}</span>
+                  <div className="InfoProduct">
+                    <strong>{product.name}</strong>
+                    <span>R$ {(product.price / 100).toFixed(2)}</span>
+                  </div>
+
+                  <div className="AddToBag">
+                    <Link  href={`/product/${product.id}`} prefetch={ false } >
+                      <Image src={Bag} width={40} height={40} alt="" />
+                    </Link>  
+                  </div>
                 </footer>
 
               </Product>
+
             
-            </Link>
             
           )
         })}

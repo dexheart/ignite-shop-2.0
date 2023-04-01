@@ -13,7 +13,6 @@ export const Product = styled('div', {
     background: 'linear-gradient(100deg, #1ea483 0%, #7465d4 100%)',
     borderRadius: 8,
     // padding: '0.25rem ',
-    cursor: 'pointer',
     position: 'relative',
 
     display:'flex',
@@ -31,7 +30,7 @@ export const Product = styled('div', {
         bottom: '0.25rem',
         left: '0.25rem',
         right: '0.25rem',
-        padding: '2rem',
+        padding: '1.25rem',
 
         borderRadius: 6,
 
@@ -45,16 +44,35 @@ export const Product = styled('div', {
         opacity: 0,
         transition: 'all 0.2s ease-in-out',
 
-        strong: { 
-            fontSize: '$md',
-            color: '$gray100',
+        ".InfoProduct": {
+            display: 'flex',
+            flexDirection: 'column',
+
+            strong: { 
+                fontSize: '$md',
+                color: '$gray100',
+            },
+    
+            span: {
+                fontSize: '$md',
+                fontWeight: 'bold',
+                color: '$green300',
+                marginTop: '0.25rem',
+            },
         },
 
-        span: {
-            fontSize: '$md',
-            fontWeight: 'bold',
-            color: '$green300',
+        ".AddToBag": {
+            transition: '0.25s ease',
+            opacity:0.5,
+
+            '&:hover': {
+                transform: 'scale(1.1)',
+                transition: '0.25s ease',
+                opacity:1,
+            },
         },
+
+        
         
     },
 
