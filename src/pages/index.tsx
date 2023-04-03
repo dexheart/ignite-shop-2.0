@@ -56,6 +56,7 @@ export default function Home({ products }: HomeProps) {
                   </div>
 
                   <div className="AddToBag">
+
                     <Link  href={`/product/${product.id}`} prefetch={ false } >
                       <Image src={Bag} width={40} height={40} alt="" />
                     </Link>  

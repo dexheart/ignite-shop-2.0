@@ -4,8 +4,13 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { useContext, useState } from 'react'
 import Stripe from 'stripe'
+import { ShopContext } from '../../context/ShopContext'
 import { stripe } from '../../lib/stripe'
 import { ImageContainer, ProductContainer, ProductDetails } from '../../styles/pages/product'
+import {UserOrder} from  '../../context/ShopContext'
+
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 interface ProductProps {
     product: {
@@ -20,8 +25,14 @@ interface ProductProps {
 
 export default function Product({ product }: ProductProps) {
 
-    const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] = useState(false)
+    const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] = useState(false);
 
+    const {handleAddNewProductToOrder, userOrder} = useContext(ShopContext)
+
+    const newProduct: UserOrder = {
+        id: product.id,
+        quantity: 1,
+    }
 
     async function handleBuyProduct() {
         try {
@@ -66,11 +77,13 @@ export default function Product({ product }: ProductProps) {
 
                     <p>{ product.description }</p>
 
-                    <button 
+                    <button className='ButtonAddToBag'
                     disabled={isCreatingCheckoutSession} 
-                    onClick={handleBuyProduct}>
-                        Colocar na sacola
+                    // onClick={handleBuyProduct}>
+                    onClick={() => handleAddNewProductToOrder(newProduct)}>
+                            Colocar na sacola
                     </button>
+                    <ToastContainer />
                 </ProductDetails>
             </ProductContainer>
         
@@ -114,3 +127,4 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
     }
 }
+

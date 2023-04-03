@@ -7,30 +7,38 @@ import logoImg from '../assets/Logo.svg'
 import bagIcon from '../assets/bagIcon.png'
 import { ShopContextProvider } from '../context/ShopContext';
 import Link from 'next/link';
+import { MyBag } from '../components/mybag';
 
 globalStyles();
 
 export default function App({ Component, pageProps }: AppProps) {
-  
 
   return (
-    <Container>
-      <Header>
-        <Link href={`/`} >
-          <Image className='Logo' src={logoImg} alt="" />
-        </Link>
+    <ShopContextProvider>
+      <Container>
+        <Header>
+          <Link href={`/`} >
+            <Image className='Logo' src={logoImg} alt="" />
+          </Link>
 
-        <div className='Bag'>
-          <Image src={bagIcon} alt="" width={25} height={25} />
-        </div>
-      </Header>
 
-      <>
-        <ShopContextProvider>
-          <Component {...pageProps} />
-        </ShopContextProvider>
-      </>
-      
-    </Container>
+          <div className='wrapper'>
+            <div className='Bag'>
+              <Image src={bagIcon} alt="" width={25} height={25} />
+              
+            </div>
+            <MyBag />
+            
+          </div>
+        </Header>
+
+       
+          
+        <Component {...pageProps} />
+          
+        
+        
+      </Container>
+    </ShopContextProvider>
   )
 }

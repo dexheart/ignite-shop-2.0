@@ -51,7 +51,9 @@ export const ProductDetails = styled('div', {
         color: '$gray300',
     },
 
-    button: {
+    
+
+    ".ButtonAddToBag": {
         marginTop: 'auto',
         backgroundColor: '$green500',
         border: 0,
@@ -71,4 +73,6 @@ export const ProductDetails = styled('div', {
             backgroundColor: '$green300',
         },
     },
+
+    
 })
