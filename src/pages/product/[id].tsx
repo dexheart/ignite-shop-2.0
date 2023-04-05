@@ -4,127 +4,118 @@ import Head from 'next/head'
 import Image from 'next/image'
 import { useContext, useState } from 'react'
 import Stripe from 'stripe'
-import { ShopContext } from '../../context/ShopContext'
+import { ShopContext, UserOrder } from '../../context/ShopContext'
 import { stripe } from '../../lib/stripe'
-import { ImageContainer, ProductContainer, ProductDetails } from '../../styles/pages/product'
-import {UserOrder} from  '../../context/ShopContext'
+import {
+  ImageContainer,
+  ProductContainer,
+  ProductDetails,
+} from '../../styles/pages/product'
 
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 interface ProductProps {
-    product: {
-        id: string;
-        name: string;
-        imageUrl: string;
-        price: number;
-        description: string;
-        defaultPriceId: string;
-    }
+  product: {
+    id: string
+    name: string
+    imageUrl: string
+    price: number
+    description: string
+    defaultPriceId: string
+  }
 }
 
 export default function Product({ product }: ProductProps) {
+  const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] =
+    useState(false)
 
-    const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] = useState(false);
+  const { handleAddNewProductToOrder } = useContext(ShopContext)
 
-    const {handleAddNewProductToOrder, userOrder} = useContext(ShopContext)
+  const newProduct: UserOrder = {
+    id: product.id,
+    quantity: 1,
+  }
 
-    const newProduct: UserOrder = {
-        id: product.id,
-        quantity: 1,
+  async function handleBuyProduct() {
+    try {
+      setIsCreatingCheckoutSession(true)
+
+      const response = await axios.post('/api/checkout', {
+        priceId: product.defaultPriceId,
+      })
+
+      const { checkoutUrl } = response.data
+
+      window.location.href = checkoutUrl
+    } catch (err) {
+      // Conectar com ferramente de Observalidade para identificar o erro exato
+
+      setIsCreatingCheckoutSession(false)
+
+      alert('Falha ao redirecionar ao checkout!')
     }
+  }
 
-    async function handleBuyProduct() {
-        try {
-            setIsCreatingCheckoutSession(true)
+  return (
+    <>
+      <Head>
+        <title>{product.name} | Ignite Shop</title>
+      </Head>
 
-            const response = await axios.post('/api/checkout', {
-                priceId: product.defaultPriceId,
-            })
+      <ProductContainer>
+        <ImageContainer>
+          <Image src={product.imageUrl} width={520} height={480} alt={''} />
+        </ImageContainer>
 
-            const { checkoutUrl } = response.data;
+        <ProductDetails>
+          <h1>{product.name}</h1>
+          <span>R$ {(product.price / 100).toFixed(2)}</span>
 
-            window.location.href = checkoutUrl
+          <p>{product.description}</p>
 
-        } catch(err) {
-
-            // Conectar com ferramente de Observalidade para identificar o erro exato
-
-            setIsCreatingCheckoutSession(false)
-
-            alert('Falha ao redirecionar ao checkout!')
-        }
-    }
-
-
-    return(
-        <>
-            <Head>
-                <title>{product.name} | Ignite Shop</title>
-            </Head>
-        
-        
-            <ProductContainer>
-                <ImageContainer>
-                    <Image src={product.imageUrl} width={520} height={480} alt={''} />
-                    
-                </ImageContainer>
-
-
-                <ProductDetails>
-                    <h1>{ product.name }</h1>
-                    <span>R$ { (product.price / 100).toFixed(2) }</span>
-
-                    <p>{ product.description }</p>
-
-                    <button className='ButtonAddToBag'
-                    disabled={isCreatingCheckoutSession} 
-                    // onClick={handleBuyProduct}>
-                    onClick={() => handleAddNewProductToOrder(newProduct)}>
-                            Colocar na sacola
-                    </button>
-                    <ToastContainer />
-                </ProductDetails>
-            </ProductContainer>
-        
-        </>
-    )
+          <button
+            className="ButtonAddToBag"
+            disabled={isCreatingCheckoutSession}
+            // onClick={handleBuyProduct}>
+            onClick={() => handleAddNewProductToOrder(newProduct)}
+          >
+            Colocar na sacola
+          </button>
+          <ToastContainer />
+        </ProductDetails>
+      </ProductContainer>
+    </>
+  )
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-    return {
-        paths: [
-            { params: { id: 'prod_Na3mmxwR9zqqmD' } }
-        ],
-        fallback: true,
-    }
+  return {
+    paths: [{ params: { id: 'prod_Na3mmxwR9zqqmD' } }],
+    fallback: true,
+  }
 }
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
+  const productId = String(params?.id)
 
-    const productId = String(params?.id);
+  const product = await stripe.products.retrieve(productId, {
+    expand: ['default_price'],
+  })
 
-    const product = await stripe.products.retrieve(productId , {
-        expand: ['default_price'],
-    })
+  const price = product.default_price as Stripe.Price
 
-    const price = product.default_price as Stripe.Price
-    
-    
-
-    return {
-        props: {
-            product: {
-                id: product.id,
-                name: product.name,
-                imageUrl: product.images[0],
-                price: price.unit_amount,
-                description: product.description,
-                defaultPriceId: price.id,
-            }
-        },
-        revalidate: 60 * 60 * 1 // 1 hour
-
-    }
+  return {
+    props: {
+      product: {
+        id: product.id,
+        name: product.name,
+        imageUrl: product.images[0],
+        price: price.unit_amount,
+        description: product.description,
+        defaultPriceId: price.id,
+      },
+    },
+    revalidate: 60 * 60 * 1, // 1 hour
+  }
 }
-
