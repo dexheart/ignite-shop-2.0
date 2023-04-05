@@ -12,7 +12,7 @@ import { stripe } from '../lib/stripe'
 
 import Bag from '../assets/Bag.png'
 
-interface HomeProps {
+export interface HomeProps {
   products: {
     id: string
     name: string

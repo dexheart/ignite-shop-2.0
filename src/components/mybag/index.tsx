@@ -3,10 +3,12 @@ import { ShopContext } from '../../context/ShopContext'
 import bagIcon from '../../assets/bagIcon.png'
 import Image from 'next/image'
 import { DrawerTeste, Wrapper } from './styles'
+import { HomeProps } from '../../pages'
 
-import { Drawer } from 'antd'
+// import './drawer.module.css'
+// import { Drawer } from 'antd'
 
-export function MyBag() {
+export function MyBag({ products }: HomeProps) {
   const { userOrder } = useContext(ShopContext)
 
   const [open, setOpen] = useState(false)
@@ -18,10 +20,6 @@ export function MyBag() {
   const onClose = () => {
     setOpen(false)
   }
-
-  // const toggleDrawer = () => {
-  //   setOpen((prevState) => !prevState)
-  // }
 
   return (
     <>
@@ -38,12 +36,15 @@ export function MyBag() {
       </Wrapper>
 
       <DrawerTeste
+        className="teste"
         rootClassName="teste"
         placement="right"
         onClose={onClose}
         open={open}
       >
-        <button className="ABC">Aperta</button>
+        <h2>Sacola de compras</h2>
+
+        <div></div>
       </DrawerTeste>
     </>
   )

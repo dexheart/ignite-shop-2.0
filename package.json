@@ -21,6 +21,7 @@
     "framer-motion": "^10.10.0",
     "keen-slider": "^6.8.5",
     "next": "13.2.4",
+    "rc-drawer": "^6.1.5",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-modern-drawer": "^1.2.0",
