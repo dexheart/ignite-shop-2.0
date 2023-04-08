@@ -5,6 +5,9 @@ import 'react-toastify/dist/ReactToastify.css'
 export interface UserOrder {
   id: string
   quantity: number
+  imageUrl: string
+  price: number
+  name: string
 }
 
 interface ShopContextType {

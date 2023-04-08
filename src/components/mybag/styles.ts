@@ -75,15 +75,136 @@ export const DrawerTeste = styled(Drawer, {
     },
 
     '.ant-drawer-body': {
-      fontFamily: 'Roboto',
-      fontStyle: 'normal',
-      fontWeight: 700,
-      fontSize: '1rem',
-      lineHeight: '160%',
+      padding: '2rem !important',
 
-      /* Grayscale/Title */
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'space-between',
 
-      color: '$gray100',
+      '.MainContainer': {
+        '.Title': {
+          fontFamily: 'Roboto',
+          fontStyle: 'normal',
+          fontWeight: 700,
+          fontSize: '1.25rem',
+          lineHeight: '160%',
+
+          /* Grayscale/Title */
+
+          color: '$gray100',
+
+          marginBottom: '2rem',
+        },
+        '.Wrapper': {
+          height: '19rem',
+
+          '-ms-overflow-style': 'none',
+          scrollbarWidth: 'none',
+          overflowY: 'scroll',
+
+          '.ItemList': {
+            '.ImageContainer': {
+              background: 'linear-gradient(180deg, #1ea483 0%, #7465d4 100%)',
+              borderRadius: 8,
+              padding: '0.25rem',
+
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+
+              width: 60,
+              height: 60,
+
+              marginBottom: '1rem',
+              img: {
+                objectFit: 'cover',
+              },
+            },
+          },
+        },
+
+        '> .Wrapper::-webkit-scrollbar': {
+          display: 'none',
+        },
+      },
+
+      '.BuyingContainer': {
+        '.QuantityContainer': {
+          display: 'flex',
+          alingItens: 'center',
+          justifyContent: 'space-between',
+
+          span: {
+            fontFamily: 'Roboto',
+            fontStyle: 'normal',
+            fontWeight: 400,
+            fontSize: '1rem',
+            lineHeight: '160%',
+            /* identical to box height, or 26px */
+
+            display: 'flex',
+            alignItems: 'center',
+
+            /* Grayscale/Title */
+
+            color: '$gray100',
+          },
+        },
+        '.PriceConteiner': {
+          marginTop: '0.5rem',
+          display: 'flex',
+          alingItens: 'center',
+          justifyContent: 'space-between',
+
+          span: {
+            fontFamily: 'Roboto',
+            fontStyle: 'normal',
+            fontWeight: 400,
+            fontSize: '1.125rem',
+            lineHeight: '160%',
+            /* identical to box height, or 26px */
+
+            display: 'flex',
+            alignItems: 'center',
+
+            /* Grayscale/Title */
+
+            color: '$gray100',
+          },
+        },
+
+        '.ButtonContainer': {
+          marginTop: '2rem',
+
+          button: {
+            width: '100%',
+            height: '3.5rem',
+            borderRadius: 8,
+            background: '$green500',
+            border: 'none',
+            cursor: 'pointer',
+
+            '&:disabled': {
+              opacity: 0.6,
+              cursor: 'not-allowed',
+            },
+
+            '&:not(:disabled):hover': {
+              backgroundColor: '$green300',
+            },
+
+            span: {
+              fontFamily: 'Roboto',
+              fontStyle: 'normal',
+              fontWeight: 700,
+              fontSize: '1rem',
+              lineHeight: '160%',
+
+              color: '#FFF',
+            },
+          },
+        },
+      },
     },
   },
 })

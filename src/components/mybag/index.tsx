@@ -13,6 +13,12 @@ export function MyBag({ products }: HomeProps) {
 
   const [open, setOpen] = useState(false)
 
+  const totalPrice = userOrder.reduce((acc, item) => {
+    // eslint-disable-next-line prettier/prettier
+    acc = acc + (item.price / 100 )
+    return acc
+  }, 0)
+
   const showDrawer = () => {
     setOpen(true)
   }
@@ -42,9 +48,47 @@ export function MyBag({ products }: HomeProps) {
         onClose={onClose}
         open={open}
       >
-        <h2>Sacola de compras</h2>
+        <div className="MainContainer">
+          <h2 className="Title">Sacola de compras</h2>
 
-        <div></div>
+          <div className="Wrapper">
+            {userOrder.length !== 0 ? (
+              userOrder.map((item) => {
+                return (
+                  <div key={item.id} className="ItemList">
+                    <div className="ImageContainer">
+                      <Image
+                        src={item.imageUrl}
+                        width={70}
+                        height={70}
+                        alt=""
+                      />
+                    </div>
+                  </div>
+                )
+              })
+            ) : (
+              <span>Sacola Vazia</span>
+            )}
+          </div>
+        </div>
+
+        <div className="BuyingContainer">
+          <div className="QuantityContainer">
+            <span>Quantidade</span>
+            <span>{userOrder.length} itens</span>
+          </div>
+          <div className="PriceConteiner">
+            <span>Valor total</span>
+            <span>R$ {totalPrice.toFixed(2)} </span>
+          </div>
+
+          <div className="ButtonContainer">
+            <button>
+              <span>Finalizar compra</span>
+            </button>
+          </div>
+        </div>
       </DrawerTeste>
     </>
   )

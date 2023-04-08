@@ -35,6 +35,9 @@ export default function Product({ product }: ProductProps) {
   const newProduct: UserOrder = {
     id: product.id,
     quantity: 1,
+    imageUrl: product.imageUrl,
+    price: product.price,
+    name: product.name,
   }
 
   async function handleBuyProduct() {
