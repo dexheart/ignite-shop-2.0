@@ -5,13 +5,13 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const { priceId } = req.body
+  const { userOrder } = req.body
 
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed. ' })
   }
 
-  if (!priceId) {
+  if (!userOrder) {
     return res.status(400).json({ error: 'Price not found.' })
   }
 
@@ -23,12 +23,19 @@ export default async function handler(
     cancel_url: cancelUrl,
 
     mode: 'payment',
-    line_items: [
-      {
-        price: priceId,
+    line_items: userOrder.map((item) => {
+      return {
+        price: item.priceId,
         quantity: 1,
-      },
-    ],
+      }
+    }),
+
+    // [
+    //   {
+    //     price: priceId,
+    //     quantity: 1,
+    //   },
+    // ],
   })
 
   return res.status(201).json({

@@ -9,7 +9,12 @@ import { HomeProps } from '../../pages'
 // import { Drawer } from 'antd'
 
 export function MyBag({ products }: HomeProps) {
-  const { userOrder, handleRemoveProductToOrder } = useContext(ShopContext)
+  const {
+    userOrder,
+    handleRemoveProductToOrder,
+    isCreatingCheckoutSession,
+    handleBuyProduct,
+  } = useContext(ShopContext)
 
   const [open, setOpen] = useState(false)
 
@@ -99,7 +104,10 @@ export function MyBag({ products }: HomeProps) {
           </div>
 
           <div className="ButtonContainer">
-            <button disabled={isEmpty}>
+            <button
+              disabled={isEmpty || isCreatingCheckoutSession}
+              onClick={handleBuyProduct}
+            >
               <span>Finalizar compra</span>
             </button>
           </div>

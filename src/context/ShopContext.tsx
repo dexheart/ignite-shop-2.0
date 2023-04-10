@@ -1,6 +1,7 @@
 import { createContext, ReactNode, useState } from 'react'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import axios from 'axios'
 
 export interface UserOrder {
   id: string
@@ -8,9 +9,12 @@ export interface UserOrder {
   imageUrl: string
   price: number
   name: string
+  priceId: string
 }
 
 interface ShopContextType {
+  isCreatingCheckoutSession: boolean
+  handleBuyProduct: () => void
   handleRemoveProductToOrder: (elementId: string) => void
   handleAddNewProductToOrder: (newElement: UserOrder) => void
   userOrder: UserOrder[]
@@ -24,6 +28,9 @@ export const ShopContext = createContext({} as ShopContextType)
 
 export function ShopContextProvider({ children }: ShopContextProviderProps) {
   const [userOrder, setUserOrder] = useState<UserOrder[]>([])
+
+  const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] =
+    useState(false)
 
   const notifySuccessAdd = () =>
     toast.success('Camisa adicionada à sacola.', {
@@ -83,12 +90,34 @@ export function ShopContextProvider({ children }: ShopContextProviderProps) {
     notifySuccessRemoved()
   }
 
+  async function handleBuyProduct() {
+    try {
+      setIsCreatingCheckoutSession(true)
+
+      const response = await axios.post('/api/checkout', {
+        userOrder,
+      })
+
+      const { checkoutUrl } = response.data
+
+      window.location.href = checkoutUrl
+    } catch (err) {
+      // Conectar com ferramente de Observalidade para identificar o erro exato
+
+      setIsCreatingCheckoutSession(false)
+
+      alert('Falha ao redirecionar ao checkout!')
+    }
+  }
+
   return (
     <ShopContext.Provider
       value={{
+        handleBuyProduct,
         handleRemoveProductToOrder,
         handleAddNewProductToOrder,
         userOrder,
+        isCreatingCheckoutSession,
       }}
     >
       {children}

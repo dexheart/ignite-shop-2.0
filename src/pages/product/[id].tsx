@@ -1,8 +1,7 @@
-import axios from 'axios'
 import { GetStaticPaths, GetStaticProps } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
-import { useContext, useState } from 'react'
+import { useContext } from 'react'
 import Stripe from 'stripe'
 import { ShopContext, UserOrder } from '../../context/ShopContext'
 import { stripe } from '../../lib/stripe'
@@ -27,9 +26,6 @@ interface ProductProps {
 }
 
 export default function Product({ product }: ProductProps) {
-  const [isCreatingCheckoutSession, setIsCreatingCheckoutSession] =
-    useState(false)
-
   const { handleAddNewProductToOrder } = useContext(ShopContext)
 
   const newProduct: UserOrder = {
@@ -38,26 +34,7 @@ export default function Product({ product }: ProductProps) {
     imageUrl: product.imageUrl,
     price: product.price,
     name: product.name,
-  }
-
-  async function handleBuyProduct() {
-    try {
-      setIsCreatingCheckoutSession(true)
-
-      const response = await axios.post('/api/checkout', {
-        priceId: product.defaultPriceId,
-      })
-
-      const { checkoutUrl } = response.data
-
-      window.location.href = checkoutUrl
-    } catch (err) {
-      // Conectar com ferramente de Observalidade para identificar o erro exato
-
-      setIsCreatingCheckoutSession(false)
-
-      alert('Falha ao redirecionar ao checkout!')
-    }
+    priceId: product.defaultPriceId,
   }
 
   return (
@@ -79,7 +56,6 @@ export default function Product({ product }: ProductProps) {
 
           <button
             className="ButtonAddToBag"
-            disabled={isCreatingCheckoutSession}
             // onClick={handleBuyProduct}>
             onClick={() => handleAddNewProductToOrder(newProduct)}
           >
