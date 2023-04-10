@@ -103,6 +103,8 @@ export const DrawerTeste = styled(Drawer, {
           overflowY: 'scroll',
 
           '.ItemList': {
+            display: 'flex',
+
             '.ImageContainer': {
               background: 'linear-gradient(180deg, #1ea483 0%, #7465d4 100%)',
               borderRadius: 8,
@@ -120,12 +122,90 @@ export const DrawerTeste = styled(Drawer, {
                 objectFit: 'cover',
               },
             },
+
+            '.ItemFeatures': {
+              marginLeft: '1.25rem',
+
+              display: 'flex',
+              flexDirection: 'column',
+              alingItens: 'center',
+
+              '.Name': {
+                fontFamily: 'Roboto',
+                fontStyle: 'normal',
+                fontWeight: 400,
+                fontSize: '0.875rem',
+                /* identical to box height, or 29px */
+
+                display: 'flex',
+                alignItems: 'center',
+
+                /* Grayscale/Text */
+
+                color: '$gray300',
+
+                marginBottom: '0.3rem',
+              },
+
+              '.Price': {
+                fontFamily: 'Roboto',
+                fontStyle: 'normal',
+                fontWeight: 400,
+                fontSize: '0.875rem',
+                /* identical to box height, or 29px */
+
+                display: 'flex',
+                alignItems: 'center',
+
+                /* Grayscale/Text */
+
+                color: '$gray100',
+
+                marginBottom: '0.5rem',
+              },
+
+              '.RemoveButton': {
+                fontFamily: 'Roboto',
+                fontStyle: 'normal',
+                fontWeight: 400,
+                fontSize: '0.86rem',
+                /* identical to box height, or 29px */
+
+                display: 'flex',
+                alignItems: 'center',
+
+                /* Grayscale/Text */
+
+                color: '$green500',
+
+                cursor: 'pointer',
+              },
+            },
           },
         },
 
         '> .Wrapper::-webkit-scrollbar': {
           display: 'none',
         },
+      },
+
+      '.EmptyBag': {
+        display: 'flex',
+        alignItens: 'center',
+        justifyContent: 'center',
+        alignContent: 'center',
+
+        marginTop: '8.5rem',
+
+        fontFamily: 'Roboto',
+        fontStyle: 'normal',
+        fontWeight: 700,
+        fontSize: '2rem',
+        lineHeight: '160%',
+
+        /* Grayscale/Title */
+
+        color: '$gray300',
       },
 
       '.BuyingContainer': {
@@ -192,16 +272,16 @@ export const DrawerTeste = styled(Drawer, {
             '&:not(:disabled):hover': {
               backgroundColor: '$green300',
             },
+          },
 
-            span: {
-              fontFamily: 'Roboto',
-              fontStyle: 'normal',
-              fontWeight: 700,
-              fontSize: '1rem',
-              lineHeight: '160%',
+          span: {
+            fontFamily: 'Roboto',
+            fontStyle: 'normal',
+            fontWeight: 700,
+            fontSize: '1rem',
+            lineHeight: '160%',
 
-              color: '#FFF',
-            },
+            color: '#FFF',
           },
         },
       },

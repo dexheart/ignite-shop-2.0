@@ -11,6 +11,7 @@ export interface UserOrder {
 }
 
 interface ShopContextType {
+  handleRemoveProductToOrder: (elementId: string) => void
   handleAddNewProductToOrder: (newElement: UserOrder) => void
   userOrder: UserOrder[]
 }
@@ -24,8 +25,20 @@ export const ShopContext = createContext({} as ShopContextType)
 export function ShopContextProvider({ children }: ShopContextProviderProps) {
   const [userOrder, setUserOrder] = useState<UserOrder[]>([])
 
-  const notifySuccess = () =>
+  const notifySuccessAdd = () =>
     toast.success('Camisa adicionada à sacola.', {
+      position: 'bottom-left',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: false,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: 'colored',
+    })
+
+  const notifySuccessRemoved = () =>
+    toast.success('Camisa removida da sacola com sucesso.', {
       position: 'bottom-left',
       autoClose: 5000,
       hideProgressBar: false,
@@ -55,14 +68,29 @@ export function ShopContextProvider({ children }: ShopContextProviderProps) {
       setUserOrder((state) => {
         return (state = [...userOrder, newElement])
       })
-      notifySuccess()
+      notifySuccessAdd()
     } else {
       notifyWarning()
     }
   }
 
+  function handleRemoveProductToOrder(elementID: string) {
+    setUserOrder((state) =>
+      state.filter((item) => {
+        return item.id !== elementID
+      }),
+    )
+    notifySuccessRemoved()
+  }
+
   return (
-    <ShopContext.Provider value={{ handleAddNewProductToOrder, userOrder }}>
+    <ShopContext.Provider
+      value={{
+        handleRemoveProductToOrder,
+        handleAddNewProductToOrder,
+        userOrder,
+      }}
+    >
       {children}
     </ShopContext.Provider>
   )

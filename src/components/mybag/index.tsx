@@ -9,9 +9,11 @@ import { HomeProps } from '../../pages'
 // import { Drawer } from 'antd'
 
 export function MyBag({ products }: HomeProps) {
-  const { userOrder } = useContext(ShopContext)
+  const { userOrder, handleRemoveProductToOrder } = useContext(ShopContext)
 
   const [open, setOpen] = useState(false)
+
+  const isEmpty = userOrder.length === 0
 
   const totalPrice = userOrder.reduce((acc, item) => {
     // eslint-disable-next-line prettier/prettier
@@ -64,11 +66,24 @@ export function MyBag({ products }: HomeProps) {
                         alt=""
                       />
                     </div>
+
+                    <div className="ItemFeatures">
+                      <span className="Name">{item.name}</span>
+                      <span className="Price">
+                        R$ {(item.price / 100).toFixed(2)}
+                      </span>
+                      <span
+                        onClick={() => handleRemoveProductToOrder(item.id)}
+                        className="RemoveButton"
+                      >
+                        Remover
+                      </span>
+                    </div>
                   </div>
                 )
               })
             ) : (
-              <span>Sacola Vazia</span>
+              <span className="EmptyBag">Sacola Vazia</span>
             )}
           </div>
         </div>
@@ -84,7 +99,7 @@ export function MyBag({ products }: HomeProps) {
           </div>
 
           <div className="ButtonContainer">
-            <button>
+            <button disabled={isEmpty}>
               <span>Finalizar compra</span>
             </button>
           </div>
